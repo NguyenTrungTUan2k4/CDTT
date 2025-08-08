@@ -19,7 +19,10 @@ namespace NguyenTrungTuan_2122110251.Controllers
 
             return View();
         }
-
+        public ActionResult Blog()
+        {
+            return View();
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

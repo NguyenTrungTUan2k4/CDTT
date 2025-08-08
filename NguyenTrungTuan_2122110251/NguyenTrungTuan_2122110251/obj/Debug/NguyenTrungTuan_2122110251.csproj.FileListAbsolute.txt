@@ -1,3 +1,5 @@
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\obj\Debug\NguyenTrungTuan_2122110251.csproj.AssemblyReference.cache
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\obj\Debug\NguyenTrungTuan_2122110251.csproj.CoreCompileInputs.cache
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\NguyenTrungTuan_2122110251.dll.config
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\NguyenTrungTuan_2122110251.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\NguyenTrungTuan_2122110251.pdb
@@ -51,10 +53,17 @@ C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_21
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\roslyn\VBCSCompiler.exe
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\roslyn\VBCSCompiler.exe.config
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\Antlr3.Runtime.dll
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\EntityFramework.dll
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\EntityFramework.SqlServer.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\Microsoft.Web.Infrastructure.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\Newtonsoft.Json.dll
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\PagedList.dll
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\PagedList.Mvc.dll
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Net.Http.Formatting.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Helpers.dll
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Http.dll
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Http.WebHost.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Mvc.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Optimization.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Razor.dll
@@ -62,6 +71,13 @@ C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_21
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.WebPages.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.WebPages.Razor.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\WebGrease.dll
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\EntityFramework.xml
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\EntityFramework.SqlServer.xml
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\PagedList.xml
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\PagedList.Mvc.xml
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Net.Http.Formatting.xml
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Http.xml
+C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Http.WebHost.xml
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Helpers.xml
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Mvc.xml
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\System.Web.Optimization.xml
@@ -72,8 +88,6 @@ C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_21
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\Newtonsoft.Json.xml
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\Antlr3.Runtime.pdb
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\obj\Debug\NguyenTrungTuan_2122110251.csproj.AssemblyReference.cache
-C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\obj\Debug\NguyenTrungTuan_2122110251.csproj.CoreCompileInputs.cache
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\obj\Debug\NguyenTrungTuan_2122110251.csproj.CopyComplete
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\obj\Debug\NguyenTrungTuan_2122110251.dll
 C:\cdtt\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\NguyenTrungTuan_2122110251\obj\Debug\NguyenTrungTuan_2122110251.pdb

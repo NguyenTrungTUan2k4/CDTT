@@ -1,0 +1,204 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<dynamic>
+@{
+    ViewBag.Title = "Quản lý sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* General Table Styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 15px;
+        text-align: left;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th {
+        background-color: #007BFF;
+        color: #ffffff;
+        padding: 12px 15px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e0e0e0;
+        text-align: center;
+        color: #333;
+    }
+
+    /* Row Colors */
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f9ff;
+        cursor: pointer;
+    }
+
+    /* Image Styling */
+    img {
+        max-width: 80px;
+        height: auto;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    /* Buttons Styling */
+    a {
+        color: #007BFF;
+        text-decoration: none;
+        padding: 8px 12px;
+        border: 1px solid #007BFF;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+        a:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+    /* Action Buttons */
+    td a {
+        margin: 0 5px;
+    }
+
+    /* Title Styling */
+    h2 {
+        font-size: 26px;
+        color: #333;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #007BFF;
+        padding-bottom: 10px;
+    }
+
+    /* Search Box */
+    p {
+        margin-bottom: 20px;
+    }
+
+        p input[type="text"] {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        p input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            p input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+        /* Create Button */
+        p > a {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+            p > a:hover {
+                background-color: #218838;
+            }
+
+    /* Pagination Styling */
+    .pagination {
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a, .pagination span {
+            color: #007BFF;
+            text-decoration: none;
+            padding: 8px 12px;
+            border: 1px solid #007BFF;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+            .pagination a:hover, .pagination .active span {
+                background-color: #007BFF;
+                color: #fff;
+            }
+</style>
+
+
+<h2>Quản lý sản phẩm</h2>
+
+<p>
+    @Html.ActionLink("Thêm sản phẩm", "Create", null, new { @class = "btn btn-primary" })
+</p>
+@using (Html.BeginForm("Index", "Product", FormMethod.Get))
+{
+    <p>
+        Tìm tên sản phẩm: @Html.TextBox("Search", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Tìm kiếm" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>Tên sản phẩm</th>
+        <th style="width:200px">Hình ảnh</th>
+        <th>Mô tả</th>
+        <th>Giá</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>
+                <img src="@Url.Content("~/content/images/items/default.jpg")" alt="Product Image" class="img-thumbnail" style="width: 100px;">
+            </td>
+            <td>@item.Description</td>
+            <td>@item.Price</td>
+            <td>@(item.IsActive ? "Hoạt động" : "Không hoạt động")</td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Xóa", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

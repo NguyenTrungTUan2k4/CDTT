@@ -1,0 +1,116 @@
+﻿@model NguyenTrungTuan_2122110251.Context.Product
+
+@{
+    ViewBag.Title = "Edit Product";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mb-4">Edit Product</h2>
+
+@using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Product Information</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Name)</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Avartar)</label>
+                    <div class="col-md-9">
+                        <input type="file" name="ImageUpLoad" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.CategoryId)</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.ShortDec)</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.ShortDec, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShortDec, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.FullDecription)</label>
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(model => model.FullDecription, new { @class = "form-control", rows = 4 })
+                        @Html.ValidationMessageFor(model => model.FullDecription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Price)</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.PriceDiscount)</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.PriceDiscount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PriceDiscount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Checkbox Inputs -->
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.Deleted)</label>
+                    <div class="col-md-9">
+                        <div class="form-check">
+                            @Html.EditorFor(model => model.Deleted)
+                            @Html.ValidationMessageFor(model => model.Deleted, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.ShowOnHomePage)</label>
+                    <div class="col-md-9">
+                        <div class="form-check">
+                            @Html.EditorFor(model => model.ShowOnHomePage)
+                            @Html.ValidationMessageFor(model => model.ShowOnHomePage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="col-md-3 col-form-label">@Html.LabelFor(model => model.DisplayOrder)</label>
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="row">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary ms-2" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
