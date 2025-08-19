@@ -7,7 +7,10 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9 ftco-animate text-center">
-                <p class="breadcrumbs"><span class="mr-2"><a href="@Url.Action("Index", "Home")">Home</a></span> <span>Cart</span></p>
+                <p class="breadcrumbs">
+                    <span class="mr-2"><a href="@Url.Action("Index", "Home")">Home</a></span>
+                    <span>Cart</span>
+                </p>
                 <h1 class="mb-0 bread">My Cart</h1>
             </div>
         </div>
@@ -16,156 +19,398 @@
 
 <section class="ftco-section ftco-cart">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12 ftco-animate">
-                <div class="cart-list">
-                    <table class="table">
-                        <thead class="thead-primary">
-                            <tr class="text-center">
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
-                                <th>Product name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+        @{
+            var cart = Model as List<NguyenTrungTuan_2122110251.Models.CartModel>;
+        }
 
-                                <td class="image-prod"><div class="img" style="background-image:url(@Url.Content("~/Content/images/product-3.jpg"));"></div></td>
+        @if (cart != null && cart.Count > 0)
+        {
+            <div class="row">
+                <div class="col-md-12 ftco-animate">
+                    <div class="cart-list">
+                        <table class="table">
+                            <thead class="thead-primary">
+                                <tr class="text-center">
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in cart)
+                                {
+                                    <tr class="text-center" id="cart-item-@item.Product.Id">
+                                        <td class="product-remove">
+                                            <a href="#" onclick="removeFromCart(@item.Product.Id)">
+                                                <span class="ion-ios-close"></span>
+                                            </a>
+                                        </td>
 
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
+                                        <td class="image-prod">
+                                            <div class="img" style="background-image:url(@Url.Content("~/Content/images/items/" + (string.IsNullOrEmpty(item.Product.Image) ? "product-1.jpg" : item.Product.Image)));"></div>
+                                        </td>
 
-                                <td class="price">$4.90</td>
+                                        <td class="product-name">
+                                            <h3>@item.Product.Name</h3>
+                                            <p>@(string.IsNullOrEmpty(item.Product.ShortDes) ? "No description available" : item.Product.ShortDes)</p>
+                                        </td>
 
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
+                                        <td class="price">$@item.Product.Price.ToString("0.00")</td>
 
-                                <td class="total">$4.90</td>
-                            </tr><!-- END TR-->
+                                        <td class="quantity">
+                                            <div class="input-group mb-3">
+                                                <input type="number" name="quantity" class="quantity form-control input-number" value="@item.Quantity" min="1" max="100" data-product-id="@item.Product.Id">
+                                            </div>
+                                        </td>
 
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-                                <td class="image-prod"><div class="img" style="background-image:url(@Url.Content("~/Content/images/product-4.jpg"));"></div></td>
-
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
-
-                                <td class="price">$15.70</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
-
-                                <td class="total">$15.70</td>
-                            </tr><!-- END TR-->
-                        </tbody>
-                    </table>
+                                        <td class="total">$@((item.Product.Price * item.Quantity).ToString("0.00"))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-end">
-            <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-                <div class="cart-total mb-3">
-                    <h3>Coupon Code</h3>
-                    <p>Enter your coupon code if you have one</p>
-                    <form action="#" class="info">
-                        <div class="form-group">
-                            <label for="">Coupon code</label>
-                            <input type="text" class="form-control text-left px-3" placeholder="">
-                        </div>
-                    </form>
+            <div class="row justify-content-end">
+                <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+                    <div class="cart-total mb-3">
+                        <h3>Coupon Code</h3>
+                        <p>Enter your coupon code if you have one</p>
+                        <form action="#" class="info">
+                            <div class="form-group">
+                                <label for="">Coupon Code</label>
+                                <input type="text" class="form-control text-left px-3" placeholder="">
+                            </div>
+                        </form>
+                    </div>
+                    <p><a href="#" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
                 </div>
-                <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
-            </div>
-            <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-                <div class="cart-total mb-3">
-                    <h3>Estimate shipping and tax</h3>
-                    <p>Enter your destination to get a shipping estimate</p>
-                    <form action="#" class="info">
-                        <div class="form-group">
-                            <label for="">Country</label>
-                            <input type="text" class="form-control text-left px-3" placeholder="">
-                        </div>
-                        <div class="form-group">
-                            <label for="country">State/Province</label>
-                            <input type="text" class="form-control text-left px-3" placeholder="">
-                        </div>
-                        <div class="form-group">
-                            <label for="country">Zip/Postal Code</label>
-                            <input type="text" class="form-control text-left px-3" placeholder="">
-                        </div>
-                    </form>
+                <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+                    <div class="cart-total mb-3">
+                        <h3>Estimate Shipping and Tax</h3>
+                        <p>Enter your destination to get a shipping estimate</p>
+                        <form action="#" class="info">
+                            <div class="form-group">
+                                <label for="">Country</label>
+                                <input type="text" class="form-control text-left px-3" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="country">State/Province</label>
+                                <input type="text" class="form-control text-left px-3" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Zip/Postal Code</label>
+                                <input type="text" class="form-control text-left px-3" placeholder="">
+                            </div>
+                        </form>
+                    </div>
+                    <p><a href="#" class="btn btn-primary py-3 px-4">Estimate</a></p>
                 </div>
-                <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Estimate</a></p>
-            </div>
-            <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-                <div class="cart-total mb-3">
-                    <h3>Cart Totals</h3>
-                    <p class="d-flex">
-                        <span>Subtotal</span>
-                        <span>$20.60</span>
-                    </p>
-                    <p class="d-flex">
-                        <span>Delivery</span>
-                        <span>$0.00</span>
-                    </p>
-                    <p class="d-flex">
-                        <span>Discount</span>
-                        <span>$3.00</span>
-                    </p>
-                    <hr>
-                    <p class="d-flex total-price">
-                        <span>Total</span>
-                        <span>$17.60</span>
-                    </p>
+                <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+                    <div class="cart-total mb-3">
+                        <h3>Cart Totals</h3>
+                        <p class="d-flex">
+                            <span>Subtotal</span>
+                            <span id="subtotal">$@cart.Sum(item => item.Product.Price * item.Quantity).ToString("0.00")</span>
+                        </p>
+                        <p class="d-flex">
+                            <span>Delivery</span>
+                            <span>$0.00</span>
+                        </p>
+                        <p class="d-flex">
+                            <span>Discount</span>
+                            <span>$0.00</span>
+                        </p>
+                        <hr>
+                        <p class="d-flex total-price">
+                            <span>Total</span>
+                            <span id="total-price">$@cart.Sum(item => item.Product.Price * item.Quantity).ToString("0.00")</span>
+                        </p>
+                    </div>
+                    <p><button id="btnThanhToan" class="btn btn-primary py-3 px-4">Checkout</button></p>
                 </div>
-                <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <div class="empty-cart">
+                        <i class="icon-shopping-cart" style="font-size: 4rem; color: #ccc; margin-bottom: 20px;"></i>
+                        <h3>Your cart is empty</h3>
+                        <p>You don’t have any products in your cart.</p>
+                        <a href="@Url.Action("Index", "Product")" class="btn btn-primary py-3 px-5">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </section>
 
+<style>
+    .empty-cart {
+        padding: 60px 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+        .empty-cart i {
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .empty-cart h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .empty-cart p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+    #btnThanhToan {
+        background: #28a745;
+        border-color: #28a745;
+        font-weight: 600;
+        font-size: 16px;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+    }
+
+        #btnThanhToan:hover {
+            background: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        #btnThanhToan:disabled {
+            background: #6c757d;
+            border-color: #6c757d;
+            transform: none;
+            box-shadow: none;
+        }
+
+    .modal-header.bg-success {
+        background: linear-gradient(135deg, #28a745, #20c997) !important;
+    }
+
+    .modal-body .fa-check-circle {
+        color: #28a745;
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+</style>
+
 @section Scripts {
     <script>
-        $(document).ready(function(){
-            var quantitiy=0;
-            $('.quantity-right-plus').click(function(e){
-                // Stop acting like a button
-                e.preventDefault();
-                // Get the field name
-                var quantity = parseInt($('#quantity').val());
+    $(document).ready(function(){
+        $(document).on('input', '.quantity input', function() {
+            var input = $(this);
+            var quantity = parseInt(input.val());
+            var productId = input.data('product-id');
+            if (quantity > 0) {
+                updateProductTotal(productId, quantity);
+                updateCartTotals();
+            }
+        });
 
-                // If is not undefined
-                $('#quantity').val(quantity + 1);
-                // Increment
-            });
+        $(document).on('blur', '.quantity input', function() {
+            var input = $(this);
+            var quantity = parseInt(input.val());
+            var productId = input.data('product-id');
+            if (quantity > 0) {
+                updateQuantity(productId, quantity);
+            }
+        });
+    });
 
-            $('.quantity-left-minus').click(function(e){
-                // Stop acting like a button
-                e.preventDefault();
-                // Get the field name
-                var quantity = parseInt($('#quantity').val());
-
-                // If is not undefined
-                // Increment
-                if(quantity>0){
-                    $('#quantity').val(quantity - 1);
+    function removeFromCart(productId) {
+        if (confirm('Are you sure you want to remove this product from your cart?')) {
+            $.ajax({
+                url: '@Url.Action("Remove", "Cart")',
+                type: 'POST',
+                data: { Id: productId },
+                success: function(response) {
+                    if (response.Success) {
+                        $('#cart-item-' + productId).remove();
+                        updateCartTotals();
+                        if ($('tbody tr').length === 0) { location.reload(); }
+                        updateCartCount();
+                    } else {
+                        if (response.RequireLogin) {
+                            if (confirm('Your session has expired. Do you want to go to the login page?')) {
+                                window.location.href = '@Url.Action("Login", "Home")';
+                            }
+                        } else {
+                            alert(response.Message);
+                        }
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while removing the product!');
                 }
             });
+        }
+    }
+
+    function updateQuantity(productId, quantity) {
+        if (quantity <= 0) {
+            alert('Quantity must be greater than 0!');
+            return;
+        }
+        $.ajax({
+            url: '@Url.Action("UpdateQuantity", "Cart")',
+            type: 'POST',
+            data: { id: productId, quantity: parseInt(quantity) },
+            success: function(response) {
+                if (response.Success) {
+                    updateProductTotal(productId, quantity);
+                    updateCartTotals();
+                    updateCartCount();
+                } else {
+                    if (response.RequireLogin) {
+                        if (confirm('Your session has expired. Do you want to go to the login page?')) {
+                            window.location.href = '@Url.Action("Login", "Home")';
+                        }
+                    } else {
+                        alert(response.Message || 'An error occurred while updating quantity!');
+                    }
+                }
+            },
+            error: function() {
+                alert('An error occurred while updating quantity!');
+            }
         });
+    }
+
+    function updateProductTotal(productId, quantity) {
+        var row = $('#cart-item-' + productId);
+        var price = parseFloat(row.find('.price').text().replace('$', ''));
+        var total = price * quantity;
+        row.find('.total').text('$' + total.toFixed(2));
+    }
+
+    function updateCartTotals() {
+        var subtotal = 0;
+        $('tbody tr').each(function() {
+            var price = parseFloat($(this).find('.price').text().replace('$', ''));
+            var quantity = parseInt($(this).find('.quantity input').val());
+            subtotal += price * quantity;
+        });
+        $('#subtotal').text('$' + subtotal.toFixed(2));
+        $('#total-price').text('$' + subtotal.toFixed(2));
+    }
+
+    function updateCartCount() {
+        $.ajax({
+            url: '@Url.Action("GetCartSummary", "Cart")',
+            type: 'GET',
+            success: function(response) {
+                if (response.RequireLogin) {
+                    $('.cart-count').text('[0]');
+                } else {
+                    var cartCount = response.TotalItems || 0;
+                    $('.cart-count').text('[' + cartCount + ']');
+                }
+            }
+        });
+    }
+
+    $('#btnThanhToan').click(function() {
+        if ($('tbody tr').length === 0) {
+            alert('Your cart is empty! Please add some products.');
+            return;
+        }
+        if (!confirm('Are you sure you want to checkout this order?')) {
+            return;
+        }
+        var btn = $(this);
+        var originalText = btn.text();
+        btn.text('Processing...').prop('disabled', true);
+
+        $.ajax({
+            url: '@Url.Action("CreatOrder", "Cart")',
+            type: 'POST',
+            data: { currentOrderDescription: 'NTT' + new Date().getTime() },
+            success: function(response) {
+                if (response.OrderId) {
+                    $.ajax({
+                        url: '@Url.Action("ClearCart", "Cart")',
+                        type: 'POST',
+                        success: function() {
+                            showSuccessMessage();
+                        },
+                        error: function() {
+                            alert('An error occurred while clearing the cart!');
+                            btn.text(originalText).prop('disabled', false);
+                        }
+                    });
+                } else {
+                    alert('An error occurred while creating the order!');
+                    btn.text(originalText).prop('disabled', false);
+                }
+            },
+            error: function(xhr) {
+                if (xhr.status === 302) {
+                    alert('Your session has expired. Please log in again!');
+                    window.location.href = '@Url.Action("Login", "Home")';
+                } else {
+                    alert('An error occurred during checkout!');
+                }
+                btn.text(originalText).prop('disabled', false);
+            }
+        });
+    });
+
+    function showSuccessMessage() {
+        var modal = $('<div class="modal fade" id="successModal" tabindex="-1" role="dialog">' +
+            '<div class="modal-dialog modal-dialog-centered" role="document">' +
+            '<div class="modal-content">' +
+            '<div class="modal-header bg-success text-white">' +
+            '<h5 class="modal-title">Checkout Successful!</h5>' +
+            '<button type="button" class="close text-white" data-dismiss="modal">' +
+            '<span>&times;</span>' +
+            '</button>' +
+            '</div>' +
+            '<div class="modal-body text-center">' +
+            '<i class="fa fa-check-circle text-success" style="font-size: 4rem; margin-bottom: 20px;"></i>' +
+            '<h4>Your order has been placed successfully!</h4>' +
+            '<p>Thank you for shopping with us.</p>' +
+            '</div>' +
+            '<div class="modal-footer justify-content-center">' +
+            '<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.location.href=\'@Url.Action("Index", "Home")\'">Back to Home</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>');
+
+        $('body').append(modal);
+        $('#successModal').modal('show');
+
+        $('#successModal').on('hidden.bs.modal', function() {
+            $(this).remove();
+            window.location.href = '@Url.Action("Index", "Home")';
+        });
+    }
     </script>
-} 
+}

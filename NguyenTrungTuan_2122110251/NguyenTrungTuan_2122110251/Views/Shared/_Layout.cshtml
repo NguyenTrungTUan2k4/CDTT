@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Vegefoods - Free Bootstrap 4 Template by Colorlib</title>
+    <title>TrungTuanShop</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -53,9 +53,11 @@
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
             <a class="navbar-brand" href="@Url.Action("Index", "Home")">Vegefoods</a>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="oi oi-menu"></span> Menu
             </button>
+
 
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
@@ -65,15 +67,51 @@
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
                                                          <a class="dropdown-item" href="@Url.Action("Index", "Product")">Product</a>
                              <a class="dropdown-item" href="@Url.Action("ListProduct", "Product")">ListProduct</a>
-                             <a class="dropdown-item" href="@Url.Action("Detail", "Product")">Detail</a>
-                             <a class="dropdown-item" href="@Url.Action("ShoppingCart", "Cart")">Cart</a>
-                            <a class="dropdown-item" href="@Url.Action("Index", "Payment")">Checkout</a>
+                             <a class="dropdown-item" href="@Url.Action("ShoppingCart", "Cart")">Cart</a>                            
                         </div>
                     </li>
                     <li class="nav-item"><a href="@Url.Action("About", "Home")" class="nav-link">About</a></li>
                     <li class="nav-item"><a href="@Url.Action("Blog", "Home")" class="nav-link">Blog</a></li>
                     <li class="nav-item"><a href="@Url.Action("Contact", "Home")" class="nav-link">Contact</a></li>
-                    <li class="nav-item cta cta-colored"><a href="@Url.Action("ShoppingCart", "Cart")" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+                    
+                    @if (Session["idUser"] != null)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-user"></i> @Session["FullName"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home")">Home</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Home", new { area = "Admin" })">Admin</a>
+                                <a class="dropdown-item" href="@Url.Action("ShoppingCart", "Cart")">Cart</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="@Url.Action("Logout", "Home")">Log out</a>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a href="@Url.Action("Login", "Home")" class="nav-link">Login</a></li>
+                        <li class="nav-item"><a href="@Url.Action("Register", "Home")" class="nav-link">Register</a></li>
+                    }
+                    
+                    <li class="nav-item cta cta-colored">
+                        @if (Session["idUser"] != null)
+                        {
+                            int userId = int.Parse(Session["idUser"].ToString());
+                            string countKey = "count_" + userId;
+                            var cartCount = Session[countKey] ?? 0;
+                            <a href="@Url.Action("ShoppingCart", "Cart")" class="nav-link">
+                                <span class="icon-shopping_cart"></span><span class="cart-count">[@cartCount]</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Home")" class="nav-link" title="Đăng nhập để xem giỏ hàng">
+                                <span class="icon-shopping_cart"></span><span class="cart-count">[0]</span>
+                            </a>
+                        }
+                    </li>
 
                 </ul>
             </div>

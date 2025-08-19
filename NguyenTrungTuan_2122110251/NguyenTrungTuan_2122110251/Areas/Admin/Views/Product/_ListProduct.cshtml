@@ -1,0 +1,486 @@
+﻿@model PagedList.IPagedList<NguyenTrungTuan_2122110251.Context.Product>
+@using PagedList
+@using PagedList.Mvc
+
+<style>
+    .content-wrapper {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 20px 25px;
+    }
+    
+    .card-header h1 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.8rem;
+    }
+    
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .breadcrumb-item a {
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active {
+        color: white;
+    }
+    
+    .card-tools {
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 15px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        padding: 8px 16px;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+    
+    .btn-success {
+        background: linear-gradient(45deg, #2196F3, #1976D2);
+        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(45deg, #f44336, #d32f2f);
+        box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    
+    .table {
+        margin: 0;
+    }
+    
+    .table thead th {
+        background: linear-gradient(45deg, #2c3e50, #34495e);
+        color: white;
+        border: none;
+        padding: 15px 10px;
+        font-weight: 600;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .table tbody tr:hover {
+        background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .table tbody td {
+        padding: 12px 10px;
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+    }
+    
+    .product-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .product-image:hover {
+        transform: scale(1.1);
+    }
+    
+    .product-name {
+        font-weight: 600;
+        color: #2c3e50;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .category-badge {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .brand-badge {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .price {
+        font-weight: 600;
+        color: #27ae60;
+        font-size: 1.1rem;
+    }
+    
+    .price-discount {
+        color: #e74c3c;
+        text-decoration: line-through;
+        font-size: 0.9rem;
+    }
+    
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border: none;
+    }
+    
+    .status-active {
+        background: linear-gradient(45deg, #2ecc71, #27ae60);
+        color: white;
+    }
+    
+    .status-inactive {
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+    
+    .action-btn {
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+    
+    .pagination {
+        margin-top: 30px;
+    }
+    
+    .page-link {
+        border: none;
+        margin: 0 2px;
+        border-radius: 8px;
+        color: #667eea;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .page-link:hover {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        transform: translateY(-1px);
+    }
+    
+    .page-item.active .page-link {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+    }
+    
+    .page-item.disabled .page-link {
+        background: #f8f9fa;
+        color: #6c757d;
+    }
+    
+    .form-control-file {
+        border: 2px dashed #667eea;
+        border-radius: 8px;
+        padding: 10px;
+        background: rgba(102, 126, 234, 0.05);
+    }
+    
+    .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+    
+    .stats-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-boxes"></i> Quản lý sản phẩm</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")"><i class="fas fa-home"></i> Trang chủ</a></li>
+                        <li class="breadcrumb-item active"><i class="fas fa-box"></i> Sản phẩm</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Stats Cards -->
+            
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0"><i class="fas fa-list"></i> Danh sách sản phẩm</h3>
+                        <div class="card-tools">
+                            <!-- Nút Thêm mới sản phẩm -->
+                            <a href="@Url.Action("Create", "Product")" class="btn btn-primary btn-sm mr-2">
+                                <i class="fas fa-plus"></i> Thêm mới
+                            </a>
+                            <a href="@Url.Action("ExportExcel", "Product")" class="btn btn-success btn-sm mr-2">
+                                <i class="fas fa-file-excel"></i> Export Excel
+                            </a>
+                            
+                            <a href="@Url.Action("ListTrash", "Product")" class="btn btn-danger btn-sm mr-3">
+                                <i class="fas fa-trash-alt"></i> Thùng rác
+                            </a>
+
+                            <!-- Form nhập Excel -->
+                           
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body" id="product-list">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 100px;">Hình ảnh</th>
+                                    <th style="width: 200px;">Tên sản phẩm</th>
+                                    <th style="width: 120px;">Danh mục</th>
+                                    <th style="width: 120px;">Thương hiệu</th>
+                                    <th style="width: 150px;">Mô tả ngắn</th>
+                                    <th style="width: 100px;">Mô tả chi tiết</th>
+                                    <th style="width: 100px;">Trạng thái</th>
+                                    <th style="width: 100px;">Giá</th>
+                                    <th style="width: 80px;">Sale</th>
+                                    <th style="width: 100px;">Loại</th>
+                                    <th style="width: 120px;">Ngày tạo</th>
+                                    <th style="width: 150px;">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            <img src="@Url.Content("~/content/images/items/" + item.Image)" alt="@item.Image" class="product-image" onerror="this.src='@Url.Content("~/Content/images/product-1.jpg")'">
+                                        </td>
+                                        <td>
+                                            <div class="product-name" title="@item.Name">@item.Name</div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="category-badge">@(item.Category?.Name ?? "N/A")</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="brand-badge">@(item.Brand?.Name ?? "N/A")</span>
+                                        </td>
+                                        <td>
+                                            <div style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="@item.ShortDes">
+                                                @(string.IsNullOrEmpty(item.ShortDes) ? "Không có mô tả" : item.ShortDes)
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="@(string.IsNullOrEmpty(item.FullDescription) ? "" : item.FullDescription)">
+                                                @if (string.IsNullOrEmpty(item.FullDescription))
+                                                {
+                                                    <span>Không có mô tả chi tiết</span>
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw(System.Text.RegularExpressions.Regex.Replace(item.FullDescription, "<[^>]*>", ""))
+                                                }
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.ShowOnHomePage == true)
+                                            {
+                                                <button class="status-badge status-active toggle-show-home" data-id="@item.Id" data-state="false">
+                                                    <i class="fas fa-eye"></i> Hiện
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="status-badge status-inactive toggle-hide-home" data-id="@item.Id" data-state="true">
+                                                    <i class="fas fa-eye-slash"></i> Ẩn
+                                                </button>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="price">$@item.Price.ToString("0.00")</div>
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.PriceDiscount.HasValue && item.PriceDiscount > 0)
+                                            {
+                                                <div class="price-discount">$@item.PriceDiscount.Value.ToString("0.00")</div>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.TypeId.HasValue)
+                                            {
+                                                <span class="badge badge-info">@item.TypeId</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.CreatedAt.HasValue)
+                                            {
+                                                <small>@item.CreatedAt.Value.ToString("dd/MM/yyyy")</small>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <a href="@Url.Action("Edit", new { id = item.Id })" class="action-btn btn-warning">
+                                                    <i class="fas fa-edit"></i> Sửa
+                                                </a>
+                                                <a href="@Url.Action("Details", new { id = item.Id })" class="action-btn btn-info">
+                                                    <i class="fas fa-info-circle"></i> Chi tiết
+                                                </a>
+                                                <a href="@Url.Action("Trash", new { id = item.Id })" class="action-btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Xóa
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="card-footer">
+                    <nav aria-label="Pagination">
+                        <ul class="pagination justify-content-center mb-0">
+                            @if (Model.HasPreviousPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@(Model.PageNumber - 1)" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i> Trước
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-hidden="true">
+                                        <i class="fas fa-chevron-left"></i> Trước
+                                    </span>
+                                </li>
+                            }
+
+                            @for (int i = 1; i <= Model.PageCount; i++)
+                            {
+                                if (i == Model.PageNumber)
+                                {
+                                    <li class="page-item active">
+                                        <span class="page-link">@i</span>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@i">@i</a>
+                                    </li>
+                                }
+                            }
+
+                            @if (Model.HasNextPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@(Model.PageNumber + 1)" aria-label="Next">
+                                        Tiếp <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-hidden="true">
+                                        Tiếp <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

@@ -1,244 +1,109 @@
-﻿@model NguyenTrungTuan_2122110251.Context.Product
+﻿@model NguyenTrungTuan_2122110251.Models.ProductViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Product";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
-
-<style>
-    /* Custom styles for the form */
-    .form-horizontal {
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 20px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
     }
+</script>
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
 
-        .form-horizontal h4 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #333;
-        }
 
-    .form-group label {
-        font-weight: bold;
-        color: #555;
-    }
+                @using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
 
-    .form-group input[type="file"] {
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-        background-color: #fff;
-    }
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4>Thêm mới sản phẩm</h4>
+                        </div>
+                        <div class="card-body">
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-    textarea.form-control {
-        min-height: 150px;
-    }
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.Name, "Tên sản phẩm", new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên sản phẩm" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
 
-    .form-control {
-        border-radius: 5px;
-        box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
-    }
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.Image, "Hình ảnh", new { @class = "form-label" })
+                                <input type="file" name="image" class="form-control" onchange="previewImage(event)" />
+                                <br />
+                                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; width: 200px;" class="img-thumbnail" />
+                                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                            </div>
 
-    .btn-default {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        font-size: 1rem;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.CategoryId, "Danh mục", new { @class = "form-label" })
+                                @Html.DropDownListFor(model => model.CategoryId, Model.Categories, "Chọn danh mục", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                            </div>
 
-        .btn-default:hover {
-            background-color: #0056b3;
-            color: white;
-        }
+                            <!-- Thương hiệu -->
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.BrandId, "Thương hiệu", new { @class = "form-label" })
+                                @Html.DropDownListFor(model => model.BrandId, Model.Brands, "Chọn thương hiệu", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
+                            </div>
 
-    .text-danger {
-        font-size: 0.9rem;
-        color: #e3342f !important;
-    }
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.ShortDes, "Mô tả ngắn", new { @class = "form-label" })
+                                @Html.TextAreaFor(model => model.ShortDes, new { @class = "form-control", rows = 3, placeholder = "Nhập mô tả ngắn" })
+                                @Html.ValidationMessageFor(model => model.ShortDes, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.FullDescription, "Mô tả chi tiết", new { @class = "form-label" })
+                                @Html.TextAreaFor(model => model.FullDescription, new { @class = "form-control", rows = 3, id = "FullDescription", placeholder = "Nhập mô tả chi tiết" })
+                                @Html.ValidationMessageFor(model => model.FullDescription, "", new { @class = "text-danger" })
+                            </div>
 
-    a {
-        color: #007bff;
-        text-decoration: none;
-    }
 
-        a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.Price, "Giá", new { @class = "form-label" })
+                                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập giá sản phẩm" } })
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
 
-    h2 {
-        color: #333;
-        font-size: 2rem;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-</style>
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.PriceDiscount, "Sales", new { @class = "form-label" })
+                                @Html.EditorFor(model => model.PriceDiscount, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập giá sale" } })
+                                @Html.ValidationMessageFor(model => model.PriceDiscount, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group mb-3">
+                                @Html.LabelFor(model => model.TypeId, "TypeId", new { @class = "form-label" })
+                                @Html.EditorFor(model => model.TypeId, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập TypeId" } })
+                                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                            </div>
 
-<h2>Create</h2>
-
-@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4>Product</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Avartar, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="file" name="ImageUpLoad" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CategoryId, ViewBag.ListCategory as SelectList, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ShortDec, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ShortDec, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ShortDec, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FullDecription, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.FullDecription, new { @class = "form-control", @id = "FullDecription" })
-                @Html.ValidationMessageFor(model => model.FullDecription, "", new { @class = "text-danger" })
-            </div>
-            <script>// Đảm bảo CKEditor được khởi tạo sau khi trang được tải đầy đủ
-            $(document).ready(function () {
-                CKEDITOR.replace('FullDecription');
-
-                // Đảm bảo CKEditor có thể gửi dữ liệu vào form khi submit
-                $('form').submit(function () {
-                    // Cập nhật giá trị của CKEditor vào textarea khi form được submit
-                    for (instance in CKEDITOR.instances) {
-                        CKEDITOR.instances[instance].updateElement();
-                    }
-                });
-            });</script>
-
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PriceDiscount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PriceDiscount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PriceDiscount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.TypeId, ViewBag.ProductType as SelectList, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Slug, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Slug, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Slug, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BrandId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.BrandId, ViewBag.ListBrands as SelectList, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.Deleted, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.Deleted)
-                        @Html.ValidationMessageFor(model => model.Deleted, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Lưu</button>
+                            @Html.ActionLink("Huỷ", "Index", null, new { @class = "btn btn-secondary" })
+                        </div>
                     </div>
-                </div>
-            </div>*@
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.ShowOnHomePage, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.ShowOnHomePage)
-                        @Html.ValidationMessageFor(model => model.ShowOnHomePage, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>*@
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.DisplayOrder, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.CreatedOnUtc, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CreatedOnUtc, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CreatedOnUtc, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.UpdatedOnUtc, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.UpdatedOnUtc, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.UpdatedOnUtc, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                }
             </div>
         </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    </section>
 </div>
+<!-- CKEditor -->
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('FullDescription', {
+        language: 'vi',
+        height: 300
+    });
+</script>

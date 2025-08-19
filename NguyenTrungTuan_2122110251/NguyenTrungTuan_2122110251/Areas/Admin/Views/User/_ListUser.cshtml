@@ -1,0 +1,407 @@
+﻿@model PagedList.IPagedList<NguyenTrungTuan_2122110251.Context.User>
+@using PagedList
+@using PagedList.Mvc
+
+<style>
+    .content-wrapper {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px 0;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 20px 25px;
+    }
+    
+    .card-header h1 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.8rem;
+    }
+    
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .breadcrumb-item a {
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active {
+        color: white;
+    }
+    
+    .card-tools {
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 15px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        padding: 8px 16px;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+    
+    .btn-success {
+        background: linear-gradient(45deg, #2196F3, #1976D2);
+        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(45deg, #f44336, #d32f2f);
+        box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    
+    .table {
+        margin: 0;
+    }
+    
+    .table thead th {
+        background: linear-gradient(45deg, #2c3e50, #34495e);
+        color: white;
+        border: none;
+        padding: 15px 10px;
+        font-weight: 600;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .table tbody tr:hover {
+        background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .table tbody td {
+        padding: 12px 10px;
+        vertical-align: middle;
+        border: 1px solid #dee2e6;
+    }
+    
+    .user-name {
+        font-weight: 600;
+        color: #2c3e50;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .user-email {
+        background: #f8f9fa;
+        padding: 4px 8px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        color: #6c757d;
+        font-family: monospace;
+    }
+    
+    .admin-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border: none;
+    }
+    
+    .admin-true {
+        background: linear-gradient(45deg, #2ecc71, #27ae60);
+        color: white;
+    }
+    
+    .admin-false {
+        background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        color: white;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+    
+    .action-btn {
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .action-btn:hover {
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+    
+    .pagination {
+        margin-top: 30px;
+    }
+    
+    .page-link {
+        border: none;
+        margin: 0 2px;
+        border-radius: 8px;
+        color: #667eea;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .page-link:hover {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        transform: translateY(-1px);
+    }
+    
+    .page-item.active .page-link {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+    }
+    
+    .page-item.disabled .page-link {
+        background: #f8f9fa;
+        color: #6c757d;
+    }
+    
+    .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .stats-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+    
+    .stats-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-users"></i> Quản lý khách hàng</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")"><i class="fas fa-home"></i> Trang chủ</a></li>
+                        <li class="breadcrumb-item active"><i class="fas fa-users"></i> Khách hàng</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-card text-center">
+                        <div class="stats-number">@Model.Count()</div>
+                        <div class="stats-label">Tổng khách hàng</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-card text-center">
+                        <div class="stats-number">@Model.Count(u => u.IsAdmin == true)</div>
+                        <div class="stats-label">Quản trị viên</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-card text-center">
+                        <div class="stats-number">@Model.Count(u => u.IsAdmin == false)</div>
+                        <div class="stats-label">Khách hàng thường</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stats-card text-center">
+                        <div class="stats-number">@Model.PageCount</div>
+                        <div class="stats-label">Tổng trang</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0"><i class="fas fa-list"></i> Danh sách khách hàng</h3>
+                        
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 150px;">Họ</th>
+                                    <th style="width: 150px;">Tên</th>
+                                    <th style="width: 200px;">Email</th>
+                                    <th style="width: 100px;">Admin</th>
+                                    <th style="width: 150px;">Thời gian tạo tài khoản</th>
+                                    <th style="width: 150px;">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="user-name" title="@item.LastName">
+                                                @Html.DisplayFor(modelItem => item.LastName)
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="user-name" title="@item.FirstName">
+                                                @Html.DisplayFor(modelItem => item.FirstName)
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="user-email">@Html.DisplayFor(modelItem => item.Email)</span>
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.IsAdmin == true)
+                                            {
+                                                <span class="admin-badge admin-true">
+                                                    <i class="fas fa-crown"></i> Admin
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="admin-badge admin-false">
+                                                    <i class="fas fa-user"></i> Khách hàng
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.CreatedAt.HasValue)
+                                            {
+                                                <small>@item.CreatedAt.Value.ToString("dd/MM/yyyy HH:mm")</small>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <a href="@Url.Action("Details", new { id = item.Id })" class="action-btn btn-info">
+                                                    <i class="fas fa-info-circle"></i> Chi tiết
+                                                </a>
+                                                <a href="@Url.Action("Delete", new { id = item.Id })" class="action-btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Xóa
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="card-footer">
+                    <nav aria-label="Pagination">
+                        <ul class="pagination justify-content-center mb-0">
+                            @if (Model.HasPreviousPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@(Model.PageNumber - 1)" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i> Trước
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-hidden="true">
+                                        <i class="fas fa-chevron-left"></i> Trước
+                                    </span>
+                                </li>
+                            }
+
+                            @for (int i = 1; i <= Model.PageCount; i++)
+                            {
+                                if (i == Model.PageNumber)
+                                {
+                                    <li class="page-item active">
+                                        <span class="page-link">@i</span>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@i">@i</a>
+                                    </li>
+                                }
+                            }
+
+                            @if (Model.HasNextPage)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@(Model.PageNumber + 1)" aria-label="Next">
+                                        Tiếp <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-hidden="true">
+                                        Tiếp <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

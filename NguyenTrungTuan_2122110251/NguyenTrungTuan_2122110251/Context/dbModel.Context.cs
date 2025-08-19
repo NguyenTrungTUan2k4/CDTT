@@ -13,10 +13,10 @@ namespace NguyenTrungTuan_2122110251.Context
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class WebASPEntities : DbContext
+    public partial class WebAspDbEntities : DbContext
     {
-        public WebASPEntities()
-            : base("name=WebASPEntities")
+        public WebAspDbEntities()
+            : base("name=WebAspDbEntities")
         {
         }
     
@@ -25,10 +25,11 @@ namespace NguyenTrungTuan_2122110251.Context
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using System
+@using NguyenTrungTuan_2122110251.Context
+@{
     ViewBag.Title = "Product Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -11,9 +13,27 @@
                 <p class="breadcrumbs">
                     <span class="mr-2"><a href="@Url.Action("Index", "Home")">Home</a></span>
                     <span class="mr-2"><a href="@Url.Action("Index", "Product")">Product</a></span>
-                    <span>Product Single</span>
+                    @if (ViewBag.Product != null)
+                    {
+                        var product = ViewBag.Product as NguyenTrungTuan_2122110251.Context.Product;
+                        <span>@product.Name</span>
+                    }
+                    else
+                    {
+                        <span>Product Detail</span>
+                    }
                 </p>
-                <h1 class="mb-0 bread">Product Single</h1>
+                <h1 class="mb-0 bread">
+                    @if (ViewBag.Product != null)
+                    {
+                        var product = ViewBag.Product as NguyenTrungTuan_2122110251.Context.Product;
+                        @product.Name
+                    }
+                    else
+                    {
+                        <span>Product Detail</span>
+                    }
+                </h1>
             </div>
         </div>
     </div>
@@ -23,66 +43,76 @@
 <section class="ftco-section">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 mb-5 ftco-animate">
-                <a href="@Url.Content("~/Content/images/product-1.jpg")" class="image-popup">
-                    <img src="@Url.Content("~/Content/images/product-1.jpg")" class="img-fluid" alt="Bell Pepper">
-                </a>
-            </div>
-            <div class="col-lg-6 product-details pl-md-5 ftco-animate">
-                <h3>Bell Pepper</h3>
-                <div class="rating d-flex">
-                    <p class="text-left mr-4">
-                        <a href="#" class="mr-2">5.0</a>
-                        <a href="#"><span class="ion-ios-star-outline"></span></a>
-                        <a href="#"><span class="ion-ios-star-outline"></span></a>
-                        <a href="#"><span class="ion-ios-star-outline"></span></a>
-                        <a href="#"><span class="ion-ios-star-outline"></span></a>
-                        <a href="#"><span class="ion-ios-star-outline"></span></a>
-                    </p>
-                    <p class="text-left mr-4">
-                        <a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">Rating</span></a>
-                    </p>
-                    <p class="text-left">
-                        <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
-                    </p>
+            @if (ViewBag.Product != null)
+            {
+                var product = ViewBag.Product as NguyenTrungTuan_2122110251.Context.Product;
+                <div class="col-lg-6 mb-5 ftco-animate">
+                    <a href="@Url.Content("~/Content/images/items/" + (string.IsNullOrEmpty(product.Image) ? "product-1.jpg" : product.Image))" class="image-popup">
+                        <img src="@Url.Content("~/Content/images/items/" + (string.IsNullOrEmpty(product.Image) ? "product-1.jpg" : product.Image))" class="img-fluid" alt="@product.Name" onerror="this.src='@Url.Content("~/Content/images/product-1.jpg")'">
+                    </a>
                 </div>
-                <p class="price"><span>$120.00</span></p>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia...</p>
+                <div class="col-lg-6 product-details pl-md-5 ftco-animate">
+                    <h3>@product.Name</h3>
+                    <div class="rating d-flex">
+                        <p class="text-left mr-4">
+                            <a href="#" class="mr-2">5.0</a>
+                            <a href="#"><span class="ion-ios-star-outline"></span></a>
+                            <a href="#"><span class="ion-ios-star-outline"></span></a>
+                            <a href="#"><span class="ion-ios-star-outline"></span></a>
+                            <a href="#"><span class="ion-ios-star-outline"></span></a>
+                            <a href="#"><span class="ion-ios-star-outline"></span></a>
+                        </p>
+                        <p class="text-left mr-4">
+                            <a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">Rating</span></a>
+                        </p>
+                        <p class="text-left">
+                            <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
+                        </p>
+                    </div>
+                    <p class="price">
+                        @if (product.PriceDiscount.HasValue && product.PriceDiscount > 0)
+                        {
+                            <span style="text-decoration: line-through; color: #aaa;">$@product.Price.ToString("0.00")</span>
+                            <span style="color: #7bb661; font-weight: bold;">$@product.PriceDiscount.Value.ToString("0.00")</span>
+                        }
+                        else
+                        {
+                            <span>$@product.Price.ToString("0.00")</span>
+                        }
+                    </p>
+                    <p>@(string.IsNullOrEmpty(product.ShortDes) ? "Product description not available" : product.ShortDes)</p>
                 <div class="row mt-4">
                     <div class="col-md-6">
-                        <div class="form-group d-flex">
-                            <div class="select-wrap">
-                                <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                <select name="" id="" class="form-control">
-                                    <option value="">Small</option>
-                                    <option value="">Medium</option>
-                                    <option value="">Large</option>
-                                    <option value="">Extra Large</option>
-                                </select>
-                            </div>
+                        <div class="input-group d-flex mb-3">
+                            <span class="input-group-btn mr-2">
+                                <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+                                    <i class="ion-ios-remove"></i>
+                                </button>
+                            </span>
+                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+                            <span class="input-group-btn ml-2">
+                                <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+                                    <i class="ion-ios-add"></i>
+                                </button>
+                            </span>
                         </div>
-                    </div>
-                    <div class="w-100"></div>
-                    <div class="input-group col-md-6 d-flex mb-3">
-                        <span class="input-group-btn mr-2">
-                            <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
-                                <i class="ion-ios-remove"></i>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-                        <span class="input-group-btn ml-2">
-                            <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-                                <i class="ion-ios-add"></i>
-                            </button>
-                        </span>
                     </div>
                     <div class="w-100"></div>
                     <div class="col-md-12">
                         <p style="color: #000;">600 kg available</p>
                     </div>
                 </div>
-                <p><a href="@Url.Action("Cart", "Product")" class="btn btn-black py-3 px-5">Add to Cart</a></p>
+                <p><a href="#" class="btn btn-black py-3 px-5" onclick="addToCart(@product.Id)">Add to Cart</a></p>
             </div>
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <h3>Sản phẩm không tồn tại</h3>
+                    <p>Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+                    <a href="@Url.Action("Index", "Product")" class="btn btn-black py-3 px-5">Quay lại danh sách sản phẩm</a>
+                </div>
+            }
         </div>
     </div>
 </section>
@@ -100,119 +130,74 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="@Url.Content("~/Content/images/product-1.jpg")" alt="Bell Pepper">
-                        <span class="status">30%</span>
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Bell Pepper</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
+            @if (ViewBag.RelatedProducts != null)
+            {
+                var relatedProducts = ViewBag.RelatedProducts as List<NguyenTrungTuan_2122110251.Context.Product>;
+                if (relatedProducts != null && relatedProducts.Count > 0)
+                {
+                    foreach (var product in relatedProducts)
+                    {
+                        var discountPercent = 0;
+                        if (product.PriceDiscount.HasValue && product.PriceDiscount > 0 && product.Price > 0)
+                        {
+                            discountPercent = (int)((product.Price - product.PriceDiscount.Value) / product.Price * 100);
+                        }
+                        
+                        <div class="col-md-6 col-lg-3 ftco-animate">
+                            <div class="product">
+                                <a href="@Url.Action("Detail", "Product", new { id = product.Id })" class="img-prod">
+                                    <img class="img-fluid" src="@Url.Content("~/Content/images/items/" + (string.IsNullOrEmpty(product.Image) ? "product-1.jpg" : product.Image))" alt="@product.Name" onerror="this.src='@Url.Content("~/Content/images/product-1.jpg")'">
+                                    @if (discountPercent > 0)
+                                    {
+                                        <span class="status">@discountPercent%</span>
+                                    }
+                                    <div class="overlay"></div>
+                                </a>
+                                <div class="text py-3 pb-4 px-3 text-center">
+                                    <h3><a href="@Url.Action("Detail", "Product", new { id = product.Id })">@product.Name</a></h3>
+                                    <div class="d-flex">
+                                        <div class="pricing">
+                                            @if (product.PriceDiscount.HasValue && product.PriceDiscount > 0)
+                                            {
+                                                <p class="price"><span class="mr-2 price-dc">$@product.Price.ToString("0.00")</span><span class="price-sale">$@product.PriceDiscount.Value.ToString("0.00")</span></p>
+                                            }
+                                            else
+                                            {
+                                                <p class="price"><span>$@product.Price.ToString("0.00")</span></p>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="bottom-area d-flex px-3">
+                                        <div class="m-auto d-flex">
+                                            <a href="@Url.Action("Cart", "Cart")" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                                <span><i class="ion-ios-menu"></i></span>
+                                            </a>
+                                            <a href="@Url.Action("Cart", "Cart")" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <span><i class="ion-ios-cart"></i></span>
+                                            </a>
+                                            <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                                <span><i class="ion-ios-heart"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center">
+                        <p style="color: #666; font-size: 1.2rem;">Không có sản phẩm liên quan.</p>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p style="color: #666; font-size: 1.2rem;">Không thể tải dữ liệu sản phẩm liên quan.</p>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="@Url.Content("~/Content/images/product-2.jpg")" alt="Strawberry">
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Strawberry</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span>$120.00</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="@Url.Content("~/Content/images/product-3.jpg")" alt="Green Beans">
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Green Beans</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span>$120.00</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="@Url.Content("~/Content/images/product-4.jpg")" alt="Purple Cabbage">
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Purple Cabbage</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span>$120.00</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </section>
@@ -254,5 +239,47 @@
             }
         });
     });
+
+    function addToCart(productId) {
+        var quantity = parseInt($('#quantity').val());
+        if (quantity <= 0) {
+            alert('Số lượng phải lớn hơn 0!');
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("AddToCart", "Cart")',
+            type: 'POST',
+            data: { id: productId, quantity: quantity },
+            success: function(response) {
+                if (response.Success) {
+                    alert(response.Message);
+                    // Cập nhật số lượng sản phẩm trong giỏ hàng trên navigation
+                    updateCartCount();
+                } else {
+                    if (response.RequireLogin) {
+                        alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
+                    } else {
+                        alert(response.Message);
+                    }
+                }
+            },
+            error: function() {
+                alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng!');
+            }
+        });
+    }
+
+    function updateCartCount() {
+        $.ajax({
+            url: '@Url.Action("GetCartSummary", "Cart")',
+            type: 'GET',
+            success: function(response) {
+                // Cập nhật số lượng sản phẩm trong giỏ hàng
+                var cartCount = response.TotalItems || 0;
+                $('.cart-count').text('[' + cartCount + ']');
+            }
+        });
+    }
 </script>
 }

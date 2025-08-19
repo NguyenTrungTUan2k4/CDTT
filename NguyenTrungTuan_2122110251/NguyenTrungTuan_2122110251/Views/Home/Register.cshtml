@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="hero-wrap hero-bread" style="background-image: url('@Url.Content("~/Content/images/bg_1.jpg")');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a href="@Url.Action("Index", "Home")">Home</a></span> <span>Register</span></p>
+                <h1 class="mb-0 bread">Register</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section contact-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="bg-white p-5 contact-form">
+                    @if (ViewBag.error != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="icon-warning"></i> @ViewBag.error
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { @class = "register-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="FirstName" class="font-weight-bold">First Name</label>
+                                    <input type="text" id="FirstName" name="FirstName" class="form-control" placeholder="Enter your first name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="LastName" class="font-weight-bold">Last Name</label>
+                                    <input type="text" id="LastName" name="LastName" class="form-control" placeholder="Enter your last name" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email" class="font-weight-bold">Email</label>
+                            <input type="email" id="Email" name="Email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password" class="font-weight-bold">Password</label>
+                            <input type="password" id="Password" name="Password" class="form-control" placeholder="Enter password (at least 6 characters)" required minlength="6">
+                            <div class="password-strength mt-2" id="passwordStrength"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ConfirmPassword" class="font-weight-bold">Confirm Password</label>
+                            <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="Re-enter password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary py-3 px-5 w-100">
+                                <i class="icon-user-plus"></i> Register
+                            </button>
+                        </div>
+                    }
+
+                    <div class="text-center my-4">
+                        <span class="text-muted">or</span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-outline-primary py-3 px-5 w-100" onclick="signUpWithGoogle()">
+                            <i class="icon-google"></i> Sign up with Google
+                        </button>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0">Already have an account? <a href="@Url.Action("Login", "Home")" class="text-primary font-weight-bold">Login now</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    function signUpWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth().signInWithPopup(provider)
+            .then((result) => {
+                const user = result.user;
+
+                // Send user info to server
+                const userData = {
+                    DisplayName: user.displayName,
+                    Email: user.email,
+                    Uid: user.uid,
+                    Provider: 'google'
+                };
+
+                $.ajax({
+                    url: '@Url.Action("HandleFirebaseLogin", "Home")',
+                    type: 'POST',
+                    data: userData,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = '@Url.Action("Index", "Home")';
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while registering!');
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred when signing up with Google!');
+            });
+    }
+
+    // Password strength indicator
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        const strengthBar = document.getElementById('passwordStrength');
+
+        if (password.length >= 6) strength++;
+        if (password.length >= 8) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[A-Z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+        strengthBar.className = 'password-strength mt-2';
+
+        if (strength <= 2) {
+            strengthBar.classList.add('strength-weak');
+        } else if (strength <= 4) {
+            strengthBar.classList.add('strength-medium');
+        } else {
+            strengthBar.classList.add('strength-strong');
+        }
+    }
+
+    // Validate password confirmation
+    function validatePasswordConfirmation() {
+        const password = document.getElementById('Password').value;
+        const confirmPassword = document.getElementById('ConfirmPassword').value;
+
+        if (confirmPassword && password !== confirmPassword) {
+            document.getElementById('ConfirmPassword').setCustomValidity('Passwords do not match!');
+        } else {
+            document.getElementById('ConfirmPassword').setCustomValidity('');
+        }
+    }
+
+    document.getElementById('Password').addEventListener('input', function() {
+        checkPasswordStrength(this.value);
+        validatePasswordConfirmation();
+    });
+
+    document.getElementById('ConfirmPassword').addEventListener('input', validatePasswordConfirmation);
+</script>
+
+<style>
+    .password-strength {
+        height: 4px;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .strength-weak {
+        background: #dc3545;
+        width: 25%;
+    }
+
+    .strength-medium {
+        background: #ffc107;
+        width: 50%;
+    }
+
+    .strength-strong {
+        background: #28a745;
+        width: 100%;
+    }
+</style>

@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="hero-wrap hero-bread" style="background-image: url('@Url.Content("~/Content/images/bg_1.jpg")');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <p class="breadcrumbs">
+                    <span class="mr-2"><a href="@Url.Action("Index", "Home")">Home</a></span>
+                    <span>Login</span>
+                </p>
+                <h1 class="mb-0 bread">Login</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section contact-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="bg-white p-5 contact-form">
+                    @if (ViewBag.error != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="icon-warning"></i> @ViewBag.error
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "login-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group">
+                            <label for="email" class="font-weight-bold">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="font-weight-bold">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="" required>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary py-3 px-5 w-100">
+                                <i class="icon-signin"></i> Login
+                            </button>
+                        </div>
+                    }
+
+                    <div class="text-center my-4">
+                        <span class="text-muted">or</span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-outline-primary py-3 px-5 w-100" onclick="signInWithGoogle()">
+                            <i class="icon-google"></i> Sign in with Google
+                        </button>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0">Don’t have an account? <a href="@Url.Action("Register", "Home")" class="text-primary font-weight-bold">Register now</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    function signInWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth().signInWithPopup(provider)
+            .then((result) => {
+                const user = result.user;
+
+                // Send user info to server
+                const userData = {
+                    DisplayName: user.displayName,
+                    Email: user.email,
+                    Uid: user.uid,
+                    Provider: 'google'
+                };
+
+                $.ajax({
+                    url: '@Url.Action("HandleFirebaseLogin", "Home")',
+                    type: 'POST',
+                    data: userData,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = '@Url.Action("Index", "Home")';
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while logging in!');
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while signing in with Google!');
+            });
+    }
+</script>

@@ -1,83 +1,118 @@
-﻿@model NguyenTrungTuan_2122110251.Context.Product
-
+﻿@model NguyenTrungTuan_2122110251.Models.ProductViewModel
+@using NguyenTrungTuan_2122110251.Models
 @{
-    ViewBag.Title = "Product Details";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Chi tiết sản phẩm";
 }
 
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Product Details</h3>
-        </div>
-        <div class="card-body">
-            <h4 class="text-muted">Product Information</h4>
-            <hr />
-            <div class="row">
-                <div class="col-md-6">
-                    <dl class="row">
-                        <dt class="col-sm-4">Name</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
-
-                        <dt class="col-sm-4">Avatar</dt>
-                        <dd class="col-sm-8">
-                            <img src="@Url.Content("~/Content/images/items/" + Model.Avartar)" alt="Product Avatar" class="img-fluid rounded" />
-                        </dd>
-
-                        <dt class="col-sm-4">Category</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.CategoryId)</dd>
-
-                        <dt class="col-sm-4">Short Description</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.ShortDec)</dd>
-
-                        <dt class="col-sm-4">Full Description</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.FullDecription)</dd>
-                    </dl>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="text-dark">Chi tiết sản phẩm</h1>
                 </div>
-
-                <div class="col-md-6">
-                    <dl class="row">
-                        <dt class="col-sm-4">Price</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Price)</dd>
-
-                        <dt class="col-sm-4">Discounted Price</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.PriceDiscount)</dd>
-
-                        <dt class="col-sm-4">Type</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.TypeId)</dd>
-
-                        <dt class="col-sm-4">Slug</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Slug)</dd>
-
-                        <dt class="col-sm-4">Brand</dt>
-                        <dd class="col-sm-8">@Html.DisplayFor(model => model.BrandId)</dd>
-                    </dl>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li class="breadcrumb-item active">Chi tiết sản phẩm</li>
+                    </ol>
                 </div>
             </div>
-
-            <h4 class="text-muted mt-4">Additional Information</h4>
-            <hr />
-            <dl class="row">
-                <dt class="col-sm-3">Deleted</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Deleted)</dd>
-
-                <dt class="col-sm-3">Show on Homepage</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.ShowOnHomePage)</dd>
-
-                <dt class="col-sm-3">Display Order</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.DisplayOrder)</dd>
-
-                <dt class="col-sm-3">Created On</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.CreatedOnUtc)</dd>
-
-                <dt class="col-sm-3">Updated On</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.UpdatedOnUtc)</dd>
-            </dl>
         </div>
-        <div class="card-footer text-end">
-            @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary me-2" })
-            @Html.ActionLink("Quay lại Danh sách", "Index", null, new { @class = "btn btn-secondary" })
-        </div>
+    </section>
 
-    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between mb-4">
+                        <div>
+                            <a href="@Url.Action("ListProduct", "Product")" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Trở về
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Edit", "Product", new { id = Model.Id })" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-md-4 font-weight-bold">Tên sản phẩm:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-plaintext">@Model.Name</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 font-weight-bold">Danh mục:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-plaintext">@Model.CategoryName</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 font-weight-bold">Thương hiệu:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-plaintext">@Model.BrandName</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 font-weight-bold">Mô tả ngắn:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-plaintext">@Model.ShortDes</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 font-weight-bold">Giá:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-plaintext text-success">@Model.Price</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 font-weight-bold">Giảm giá:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-plaintext text-danger">@Model.PriceDiscount</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 font-weight-bold">Mô tả đầy đủ:</label>
+                                    <div class="col-md-8">
+                                        <p class="form-control-plaintext">@Model.FullDescription</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-md-4 font-weight-bold">Hình ảnh:</label>
+                                    <div class="col-md-8">
+                                        @if (!string.IsNullOrEmpty(Model.Image))
+                                        {
+                                            <img src="@Url.Content("~/content/images/items/" + Model.Image)" 
+                                                 class="img-fluid img-thumbnail" 
+                                                 alt="Product Image" style="width: 200px;">
+                                        }
+                                        else
+                                        {
+                                            <p class="text-muted">Không có hình ảnh.</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- /.form-horizontal -->
+                </div>
+            </div>
+        </div>
+    </section>
 </div>

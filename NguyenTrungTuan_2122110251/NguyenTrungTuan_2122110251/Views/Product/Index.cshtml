@@ -1,4 +1,6 @@
 ﻿
+@using System
+@using NguyenTrungTuan_2122110251.Context
 @{
     ViewBag.Title = "Products";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -22,150 +24,147 @@
         <div class="row justify-content-center">
             <div class="col-md-10 mb-5 text-center">
                 <ul class="product-category">
-                    <li><a href="#" class="active">All</a></li>
-                    <li><a href="#">Vegetables</a></li>
-                    <li><a href="#">Fruits</a></li>
-                    <li><a href="#">Juice</a></li>
-                    <li><a href="#">Dried</a></li>
+                    <li><a href="@Url.Action("Index", "Product")" class="@(ViewBag.SelectedCategoryId == null ? "active" : "")">All</a></li>
+                    @if (ViewBag.Categories != null)
+                    {
+                        var categories = ViewBag.Categories as List<NguyenTrungTuan_2122110251.Context.Category>;
+                        foreach (var category in categories)
+                        {
+                            <li><a href="@Url.Action("Index", "Product", new { categoryId = category.Id })" class="@(ViewBag.SelectedCategoryId == category.Id ? "active" : "")">@category.Name</a></li>
+                        }
+                    }
                 </ul>
             </div>
         </div>
         <div class="row">
-            <!-- Product 1 -->
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="@Url.Content("~/Content/images/product-1.jpg")" alt="Bell Pepper">
-                        <span class="status">30%</span>
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Bell Pepper</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
+            @if (ViewBag.Products != null)
+            {
+                var products = ViewBag.Products as List<NguyenTrungTuan_2122110251.Context.Product>;
+                if (products != null && products.Count > 0)
+                {
+                    foreach (var product in products)
+                    {
+                        <div class="col-md-6 col-lg-3 ftco-animate">
+                            <div class="product">
+                                <a href="@Url.Action("Detail", "Product", new { id = product.Id })" class="img-prod">
+                                    <img class="img-fluid" src="@Url.Content("~/Content/images/items/" + (string.IsNullOrEmpty(product.Image) ? "product-1.jpg" : product.Image))" alt="@product.Name" onerror="this.src='@Url.Content("~/Content/images/product-1.jpg")'">
+                                    @if (product.PriceDiscount.HasValue && product.PriceDiscount > 0)
+                                    {
+                                        var discountPercent = Math.Round(((product.Price - product.PriceDiscount.Value) / product.Price) * 100);
+                                        <span class="status">@discountPercent%</span>
+                                    }
+                                    <div class="overlay"></div>
+                                </a>
+                                <div class="text py-3 pb-4 px-3 text-center">
+                                    <h3><a href="@Url.Action("Detail", "Product", new { id = product.Id })">@product.Name</a></h3>
+                                    <div class="d-flex">
+                                        <div class="pricing">
+                                            @if (product.PriceDiscount.HasValue && product.PriceDiscount > 0)
+                                            {
+                                                <p class="price"><span class="mr-2 price-dc">$@product.Price.ToString("0.00")</span><span class="price-sale">$@product.PriceDiscount.Value.ToString("0.00")</span></p>
+                                            }
+                                            else
+                                            {
+                                                <p class="price"><span>$@product.Price.ToString("0.00")</span></p>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="bottom-area d-flex px-3">
+                                        <div class="m-auto d-flex">
+                                            <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                                <span><i class="ion-ios-menu"></i></span>
+                                            </a>
+                                            <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <span><i class="ion-ios-cart"></i></span>
+                                            </a>
+                                            <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                                <span><i class="ion-ios-heart"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center">
+                        <p style="color: #666; font-size: 1.2rem;">Không có sản phẩm nào trong danh mục này.</p>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p style="color: #666; font-size: 1.2rem;">Không thể tải dữ liệu sản phẩm.</p>
                 </div>
-            </div>
-            <!-- Product 2 -->
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="@Url.Content("~/Content/images/product-2.jpg")" alt="Strawberry">
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Strawberry</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span>$120.00</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 3 -->
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="@Url.Content("~/Content/images/product-3.jpg")" alt="Green Beans">
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Green Beans</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span>$120.00</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Product 4 -->
-            <div class="col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href="#" class="img-prod"><img class="img-fluid" src="@Url.Content("~/Content/images/product-4.jpg")" alt="Purple Cabbage">
-                        <div class="overlay"></div>
-                    </a>
-                    <div class="text py-3 pb-4 px-3 text-center">
-                        <h3><a href="#">Purple Cabbage</a></h3>
-                        <div class="d-flex">
-                            <div class="pricing">
-                                <p class="price"><span>$120.00</span></p>
-                            </div>
-                        </div>
-                        <div class="bottom-area d-flex px-3">
-                            <div class="m-auto d-flex">
-                                <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                    <span><i class="ion-ios-menu"></i></span>
-                                </a>
-                                <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                    <span><i class="ion-ios-cart"></i></span>
-                                </a>
-                                <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                    <span><i class="ion-ios-heart"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Thêm các sản phẩm khác tương tự như trên, đổi tên và ảnh -->
+            }
         </div>
         <!-- Pagination -->
-        <div class="row mt-5">
-            <div class="col text-center">
-                <div class="block-27">
-                    <ul>
-                        <li><a href="#">&lt;</a></li>
-                        <li class="active"><span>1</span></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&gt;</a></li>
-                    </ul>
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div class="row mt-5">
+                <div class="col text-center">
+                    <div class="block-27">
+                        <ul>
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <li><a href="@Url.Action("Index", "Product", new { categoryId = ViewBag.SelectedCategoryId, page = ViewBag.CurrentPage - 1 })">&lt;</a></li>
+                            }
+                            else
+                            {
+                                <li><span>&lt;</span></li>
+                            }
+                            
+                            @{
+                                int startPage = Math.Max(1, ViewBag.CurrentPage - 2);
+                                int endPage = Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2);
+                                
+                                if (startPage > 1)
+                                {
+                                    <li><a href="@Url.Action("Index", "Product", new { categoryId = ViewBag.SelectedCategoryId, page = 1 })">1</a></li>
+                                    if (startPage > 2)
+                                    {
+                                        <li><span>...</span></li>
+                                    }
+                                }
+                                
+                                for (int i = startPage; i <= endPage; i++)
+                                {
+                                    if (i == ViewBag.CurrentPage)
+                                    {
+                                        <li class="active"><span>@i</span></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("Index", "Product", new { categoryId = ViewBag.SelectedCategoryId, page = i })">@i</a></li>
+                                    }
+                                }
+                                
+                                if (endPage < ViewBag.TotalPages)
+                                {
+                                    if (endPage < ViewBag.TotalPages - 1)
+                                    {
+                                        <li><span>...</span></li>
+                                    }
+                                    <li><a href="@Url.Action("Index", "Product", new { categoryId = ViewBag.SelectedCategoryId, page = ViewBag.TotalPages })">@ViewBag.TotalPages</a></li>
+                                }
+                            }
+                            
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li><a href="@Url.Action("Index", "Product", new { categoryId = ViewBag.SelectedCategoryId, page = ViewBag.CurrentPage + 1 })">&gt;</a></li>
+                            }
+                            else
+                            {
+                                <li><span>&gt;</span></li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </section>
 

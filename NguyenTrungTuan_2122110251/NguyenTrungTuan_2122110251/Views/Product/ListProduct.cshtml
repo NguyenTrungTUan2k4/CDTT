@@ -1,4 +1,6 @@
 ﻿
+@using System
+@using NguyenTrungTuan_2122110251.Context
 @{
     ViewBag.Title = "My Wishlist";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -34,101 +36,130 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-                                <td class="image-prod"><div class="img" style="background-image:url('@Url.Content("~/Content/images/product-1.jpg")');"></div></td>
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
-                                <td class="price">$4.90</td>
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
-                                <td class="total">$4.90</td>
-                            </tr>
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-                                <td class="image-prod"><div class="img" style="background-image:url('@Url.Content("~/Content/images/product-2.jpg")');"></div></td>
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
-                                <td class="price">$15.70</td>
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
-                                <td class="total">$15.70</td>
-                            </tr>
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-                                <td class="image-prod"><div class="img" style="background-image:url('@Url.Content("~/Content/images/product-3.jpg")');"></div></td>
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
-                                <td class="price">$15.70</td>
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
-                                <td class="total">$15.70</td>
-                            </tr>
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-                                <td class="image-prod"><div class="img" style="background-image:url('@Url.Content("~/Content/images/product-4.jpg")');"></div></td>
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
-                                <td class="price">$15.70</td>
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
-                                <td class="total">$15.70</td>
-                            </tr>
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-                                <td class="image-prod"><div class="img" style="background-image:url('@Url.Content("~/Content/images/product-5.jpg")');"></div></td>
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
-                                <td class="price">$15.70</td>
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
-                                <td class="total">$15.70</td>
-                            </tr>
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-                                <td class="image-prod"><div class="img" style="background-image:url('@Url.Content("~/Content/images/product-6.jpg")');"></div></td>
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
-                                <td class="price">$15.70</td>
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
-                                <td class="total">$15.70</td>
-                            </tr>
+                            @if (ViewBag.Products != null)
+                            {
+                                var products = ViewBag.Products as List<NguyenTrungTuan_2122110251.Context.Product>;
+                                if (products != null && products.Count > 0)
+                                {
+                                    foreach (var product in products)
+                                    {
+                                        var displayPrice = product.PriceDiscount.HasValue && product.PriceDiscount > 0 ? product.PriceDiscount.Value : product.Price;
+                                        <tr class="text-center">
+                                            <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+                                            <td class="image-prod">
+                                                <div class="img" style="background-image:url('@Url.Content("~/Content/images/items/" + (string.IsNullOrEmpty(product.Image) ? "product-1.jpg" : product.Image))');" onerror="this.style.backgroundImage='url(@Url.Content("~/Content/images/product-1.jpg"))'"></div>
+                                            </td>
+                                            <td class="product-name">
+                                                <h3>@product.Name</h3>
+                                                <p>@(string.IsNullOrEmpty(product.ShortDes) ? "Product description not available" : product.ShortDes)</p>
+                                            </td>
+                                            <td class="price">
+                                                @if (product.PriceDiscount.HasValue && product.PriceDiscount > 0)
+                                                {
+                                                    <span style="text-decoration: line-through; color: #aaa;">$@product.Price.ToString("0.00")</span><br>
+                                                    <span style="color: #7bb661; font-weight: bold;">$@product.PriceDiscount.Value.ToString("0.00")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>$@product.Price.ToString("0.00")</span>
+                                                }
+                                            </td>
+                                            <td class="quantity">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
+                                                </div>
+                                            </td>
+                                            <td class="total">$@displayPrice.ToString("0.00")</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr class="text-center">
+                                        <td colspan="6">
+                                            <p style="color: #666; font-size: 1.2rem;">Không có sản phẩm nào trong wishlist.</p>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr class="text-center">
+                                    <td colspan="6">
+                                        <p style="color: #666; font-size: 1.2rem;">Không thể tải dữ liệu sản phẩm.</p>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        
+        <!-- Pagination -->
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div class="row mt-5">
+                <div class="col text-center">
+                    <div class="block-27">
+                        <ul>
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <li><a href="@Url.Action("ListProduct", "Product", new { page = ViewBag.CurrentPage - 1 })">&lt;</a></li>
+                            }
+                            else
+                            {
+                                <li><span>&lt;</span></li>
+                            }
+                            
+                            @{
+                                int startPage = Math.Max(1, ViewBag.CurrentPage - 2);
+                                int endPage = Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2);
+                                
+                                if (startPage > 1)
+                                {
+                                    <li><a href="@Url.Action("ListProduct", "Product", new { page = 1 })">1</a></li>
+                                    if (startPage > 2)
+                                    {
+                                        <li><span>...</span></li>
+                                    }
+                                }
+                                
+                                for (int i = startPage; i <= endPage; i++)
+                                {
+                                    if (i == ViewBag.CurrentPage)
+                                    {
+                                        <li class="active"><span>@i</span></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("ListProduct", "Product", new { page = i })">@i</a></li>
+                                    }
+                                }
+                                
+                                if (endPage < ViewBag.TotalPages)
+                                {
+                                    if (endPage < ViewBag.TotalPages - 1)
+                                    {
+                                        <li><span>...</span></li>
+                                    }
+                                    <li><a href="@Url.Action("ListProduct", "Product", new { page = ViewBag.TotalPages })">@ViewBag.TotalPages</a></li>
+                                }
+                            }
+                            
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li><a href="@Url.Action("ListProduct", "Product", new { page = ViewBag.CurrentPage + 1 })">&gt;</a></li>
+                            }
+                            else
+                            {
+                                <li><span>&gt;</span></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </section>
 
