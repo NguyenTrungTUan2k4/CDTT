@@ -12,7 +12,7 @@
             <div class="col-md-9 ftco-animate text-center">
                 <p class="breadcrumbs">
                     <span class="mr-2"><a href="@Url.Action("Index", "Home")">Home</a></span>
-                    <span class="mr-2"><a href="@Url.Action("Index", "Product")">Product</a></span>
+                    <span class="mr-2"><a href="@Url.Action("Index", "Product")">Products</a></span>
                     @if (ViewBag.Product != null)
                     {
                         var product = ViewBag.Product as NguyenTrungTuan_2122110251.Context.Product;
@@ -63,7 +63,7 @@
                             <a href="#"><span class="ion-ios-star-outline"></span></a>
                         </p>
                         <p class="text-left mr-4">
-                            <a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">Rating</span></a>
+                            <a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">Ratings</span></a>
                         </p>
                         <p class="text-left">
                             <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
@@ -80,37 +80,37 @@
                             <span>$@product.Price.ToString("0.00")</span>
                         }
                     </p>
-                    <p>@(string.IsNullOrEmpty(product.ShortDes) ? "Product description not available" : product.ShortDes)</p>
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <div class="input-group d-flex mb-3">
-                            <span class="input-group-btn mr-2">
-                                <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
-                                    <i class="ion-ios-remove"></i>
-                                </button>
-                            </span>
-                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-                            <span class="input-group-btn ml-2">
-                                <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-                                    <i class="ion-ios-add"></i>
-                                </button>
-                            </span>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="input-group d-flex mb-3">
+                                <span class="input-group-btn mr-2">
+                                    <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+                                        <i class="ion-ios-remove"></i>
+                                    </button>
+                                </span>
+                                <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+                                <span class="input-group-btn ml-2">
+                                    <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+                                        <i class="ion-ios-add"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col-md-12">
+                            <p style="color: #000;">600 kg available</p>
                         </div>
                     </div>
-                    <div class="w-100"></div>
-                    <div class="col-md-12">
-                        <p style="color: #000;">600 kg available</p>
-                    </div>
+                    <p><a href="#" class="btn btn-black py-3 px-5" onclick="addToCart(@product.Id)">Add to Cart</a></p>
                 </div>
-                <p><a href="#" class="btn btn-black py-3 px-5" onclick="addToCart(@product.Id)">Add to Cart</a></p>
-            </div>
             }
             else
             {
                 <div class="col-12 text-center">
-                    <h3>Sản phẩm không tồn tại</h3>
-                    <p>Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
-                    <a href="@Url.Action("Index", "Product")" class="btn btn-black py-3 px-5">Quay lại danh sách sản phẩm</a>
+                    <h3>Product not found</h3>
+                    <p>The product you are looking for does not exist or has been removed.</p>
+                    <a href="@Url.Action("Index", "Product")" class="btn btn-black py-3 px-5">Back to Product List</a>
                 </div>
             }
         </div>
@@ -124,7 +124,7 @@
             <div class="col-md-12 heading-section text-center ftco-animate">
                 <span class="subheading">Products</span>
                 <h2 class="mb-4">Related Products</h2>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+                <p>Discover similar products that might interest you.</p>
             </div>
         </div>
     </div>
@@ -142,7 +142,7 @@
                         {
                             discountPercent = (int)((product.Price - product.PriceDiscount.Value) / product.Price * 100);
                         }
-                        
+
                         <div class="col-md-6 col-lg-3 ftco-animate">
                             <div class="product">
                                 <a href="@Url.Action("Detail", "Product", new { id = product.Id })" class="img-prod">
@@ -188,14 +188,14 @@
                 else
                 {
                     <div class="col-12 text-center">
-                        <p style="color: #666; font-size: 1.2rem;">Không có sản phẩm liên quan.</p>
+                        <p style="color: #666; font-size: 1.2rem;">No related products available.</p>
                     </div>
                 }
             }
             else
             {
                 <div class="col-12 text-center">
-                    <p style="color: #666; font-size: 1.2rem;">Không thể tải dữ liệu sản phẩm liên quan.</p>
+                    <p style="color: #666; font-size: 1.2rem;">Unable to load related products.</p>
                 </div>
             }
         </div>
@@ -207,13 +207,13 @@
     <div class="container py-4">
         <div class="row d-flex justify-content-center py-5">
             <div class="col-md-6">
-                <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
+                <h2 style="font-size: 22px;" class="mb-0">Subscribe to our Newsletter</h2>
                 <span>Get e-mail updates about our latest shops and special offers</span>
             </div>
             <div class="col-md-6 d-flex align-items-center">
                 <form action="#" class="subscribe-form">
                     <div class="form-group d-flex">
-                        <input type="text" class="form-control" placeholder="Enter email address">
+                        <input type="text" class="form-control" placeholder="Enter your email address">
                         <input type="submit" value="Subscribe" class="submit px-3">
                     </div>
                 </form>
@@ -223,7 +223,7 @@
 </section>
 
 @section Scripts {
-<script>
+    <script>
     $(document).ready(function(){
         var quantitiy=0;
         $('.quantity-right-plus').click(function(e){
@@ -243,7 +243,7 @@
     function addToCart(productId) {
         var quantity = parseInt($('#quantity').val());
         if (quantity <= 0) {
-            alert('Số lượng phải lớn hơn 0!');
+            alert('Quantity must be greater than 0!');
             return;
         }
 
@@ -254,18 +254,18 @@
             success: function(response) {
                 if (response.Success) {
                     alert(response.Message);
-                    // Cập nhật số lượng sản phẩm trong giỏ hàng trên navigation
+                    // Update cart item count in navigation
                     updateCartCount();
                 } else {
                     if (response.RequireLogin) {
-                        alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
+                        alert('Please log in to add products to your cart!');
                     } else {
                         alert(response.Message);
                     }
                 }
             },
             error: function() {
-                alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng!');
+                alert('An error occurred while adding the product to the cart!');
             }
         });
     }
@@ -275,11 +275,11 @@
             url: '@Url.Action("GetCartSummary", "Cart")',
             type: 'GET',
             success: function(response) {
-                // Cập nhật số lượng sản phẩm trong giỏ hàng
+                // Update cart item count
                 var cartCount = response.TotalItems || 0;
                 $('.cart-count').text('[' + cartCount + ']');
             }
         });
     }
-</script>
+    </script>
 }

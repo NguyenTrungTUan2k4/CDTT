@@ -185,17 +185,33 @@ namespace NguyenTrungTuan_2122110251.Areas.Admin.Controllers
         }
         public ActionResult Delete(int id)
         {
-            var category = _context.Categories.FirstOrDefault(c => c.Id == id);
+            var category = _context.Categories.FirstOrDefault(b => b.Id == id);
             if (category == null)
             {
                 return HttpNotFound();
             }
 
-            // Xóa sản phẩm khỏi cơ sở dữ liệu
-            _context.Categories.Remove(category);
-            _context.SaveChanges();
+            try
+            {
+                // Kiểm tra ràng buộc: brand có sản phẩm không?
+                var hasProducts = _context.Products.Any(p => p.CategoryId == id);
+                if (hasProducts)
+                {
+                    TempData["Error"] = "Không thể xóa thương hiệu vì vẫn còn sản phẩm thuộc thương hiệu này!";
+                    return RedirectToAction("ListCategory");
+                }
 
-            TempData["Success"] = "Thương hiệu đã được xóa vĩnh viễn!";
+                // Xóa brand khỏi cơ sở dữ liệu
+                _context.Categories.Remove(category);
+                _context.SaveChanges();
+
+                TempData["Success"] = "Thương hiệu đã được xóa vĩnh viễn!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Lỗi khi xóa thương hiệu: " + ex.Message;
+            }
+
             return RedirectToAction("ListCategory");
         }
         [HttpPost]

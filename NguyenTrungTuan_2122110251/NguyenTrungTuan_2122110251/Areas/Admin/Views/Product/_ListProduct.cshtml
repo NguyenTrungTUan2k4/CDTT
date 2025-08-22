@@ -293,13 +293,23 @@
                             <a href="@Url.Action("ExportExcel", "Product")" class="btn btn-success btn-sm mr-2">
                                 <i class="fas fa-file-excel"></i> Export Excel
                             </a>
-                            
+                            <a href="@Url.Action("ExportPDF", "Product")" class="btn btn-danger btn-sm mr-3">
+                                <i class="fas fa-file-pdf"></i> Export PDF
+                            </a>
+
                             <a href="@Url.Action("ListTrash", "Product")" class="btn btn-danger btn-sm mr-3">
                                 <i class="fas fa-trash-alt"></i> Thùng rác
                             </a>
+                            <form action="@Url.Action("ImportExcel", "Product", new { area = "Admin" })" method="post" enctype="multipart/form-data" class="d-flex align-items-center">
+                                @Html.AntiForgeryToken()
+                                <input type="file" name="file" class="form-control-file mr-3" />
+                                <button type="submit" class="btn btn-success btn-sm" style="white-space: nowrap;">
+                                    <i class="fas fa-upload"></i> Import Excel
+                                </button>
+                            </form>
 
-                            <!-- Form nhập Excel -->
                            
+
                         </div>
                     </div>
                 </div>
@@ -318,7 +328,7 @@
                                     <th style="width: 100px;">Trạng thái</th>
                                     <th style="width: 100px;">Giá</th>
                                     <th style="width: 80px;">Sale</th>
-                                    <th style="width: 100px;">Loại</th>
+                                    @*<th style="width: 100px;">Loại</th>*@
                                     <th style="width: 120px;">Ngày tạo</th>
                                     <th style="width: 150px;">Thao tác</th>
                                 </tr>
@@ -383,7 +393,7 @@
                                                 <span class="text-muted">-</span>
                                             }
                                         </td>
-                                        <td class="text-center">
+                                        @*<td class="text-center">
                                             @if (item.TypeId.HasValue)
                                             {
                                                 <span class="badge badge-info">@item.TypeId</span>
@@ -392,7 +402,7 @@
                                             {
                                                 <span class="text-muted">-</span>
                                             }
-                                        </td>
+                                        </td>*@
                                         <td class="text-center">
                                             @if (item.CreatedAt.HasValue)
                                             {
